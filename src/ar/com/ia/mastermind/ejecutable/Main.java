@@ -23,7 +23,7 @@ public class Main {
 		  Configuration conf = new DefaultConfiguration();
 
 
-		  Combinacion codigoSecreto = new Combinacion(new Color(3), new Color(2), new Color(3), new Color(4)); 
+		  Combinacion codigoSecreto = new Combinacion (Color.AMARILLO, Color.AZUL,  Color.ROJO, Color.AMARILLO); 
 		  FitnessFunction myFunc =
 		    new SolucionFitness(codigoSecreto);
 
@@ -31,10 +31,10 @@ public class Main {
 
 		  Gene[] sampleGenes = new Gene[ 4 ];
 
-		  sampleGenes[0] = new IntegerGene(conf, 0, 4 );  // posición 1
-		  sampleGenes[1] = new IntegerGene(conf, 0, 4 );  // posición 2
-		  sampleGenes[2] = new IntegerGene(conf, 0, 4 );  // posición 3
-		  sampleGenes[3] = new IntegerGene(conf, 0, 4 );  // posición 4
+		  sampleGenes[0] = new IntegerGene(conf, 0, 7 );  // posición 1
+		  sampleGenes[1] = new IntegerGene(conf, 0, 7 );  // posición 2
+		  sampleGenes[2] = new IntegerGene(conf, 0, 7 );  // posición 3
+		  sampleGenes[3] = new IntegerGene(conf, 0, 7 );  // posición 4
 
 		  Chromosome sampleChromosome = new Chromosome(conf, sampleGenes );
 
@@ -48,24 +48,25 @@ public class Main {
 		  {
 		      population.evolve();
 		      bestSolutionSoFar = population.getFittestChromosome();
-		      Combinacion mejor = new Combinacion(new Color((Integer) bestSolutionSoFar.getGene(0).getAllele()),
-		    		  new Color((Integer) bestSolutionSoFar.getGene(1).getAllele()),
-		    		  new Color((Integer) bestSolutionSoFar.getGene(2).getAllele()),
-		    				  new Color((Integer) bestSolutionSoFar.getGene(3).getAllele()));
+		      Combinacion mejor = new Combinacion(Color.fromInteger((Integer) bestSolutionSoFar.getGene(0).getAllele()),
+		    		  Color.fromInteger((Integer) bestSolutionSoFar.getGene(1).getAllele()),
+		    		  Color.fromInteger((Integer) bestSolutionSoFar.getGene(2).getAllele()),
+		    		  Color.fromInteger((Integer) bestSolutionSoFar.getGene(3).getAllele()));
+		      
 		      if (codigoSecreto.equals(mejor)){
 				  System.out.println( "\nGané en la evolución "+ i +"!!!!!! con el resultado: " );
-				  System.out.println("posicion 1: "+ bestSolutionSoFar.getGene(0).getAllele().toString());
-				  System.out.println("posicion 2: "+ bestSolutionSoFar.getGene(1).getAllele().toString());
-				  System.out.println("posicion 3: "+ bestSolutionSoFar.getGene(2).getAllele().toString());
-				  System.out.println("posicion 4: "+ bestSolutionSoFar.getGene(3).getAllele().toString());
+				  System.out.println("posicion 1: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(0).getAllele()).toString());
+				  System.out.println("posicion 2: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(1).getAllele()).toString());
+				  System.out.println("posicion 3: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(2).getAllele()).toString());
+				  System.out.println("posicion 4: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(3).getAllele()).toString());
 				  break;
 		      }
 			  System.out.println( "La mejor solucion para la evolución "+ i +": " );
 
-			  System.out.println("posicion 1: "+ bestSolutionSoFar.getGene(0).getAllele().toString());
-			  System.out.println("posicion 2: "+ bestSolutionSoFar.getGene(1).getAllele().toString());
-			  System.out.println("posicion 3: "+ bestSolutionSoFar.getGene(2).getAllele().toString());
-			  System.out.println("posicion 4: "+ bestSolutionSoFar.getGene(3).getAllele().toString());		      
+			  System.out.println("posicion 1: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(0).getAllele()).toString());
+			  System.out.println("posicion 2: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(1).getAllele()).toString());
+			  System.out.println("posicion 3: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(2).getAllele()).toString());
+			  System.out.println("posicion 4: "+ Color.fromInteger((int) bestSolutionSoFar.getGene(3).getAllele()).toString());		      
 		  }
 		  if (i == MAXIMAS_EVOLUCIONES) System.out.println("perdí :(");
 		}

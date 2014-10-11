@@ -20,7 +20,7 @@ public class Combinacion {
 		double cuenta = 0;
 		
 		for (int i = 0;i<4;i++){
-			if (this.getColores().get(i).esIgualA((Integer) unaSolucion.getGene(i).getAllele())) 
+			if (this.getColores().get(i).getValor() == ((Integer) unaSolucion.getGene(i).getAllele())) 
 				cuenta = cuenta + 25;			
 		}
 		return cuenta;
@@ -29,7 +29,7 @@ public class Combinacion {
 		double cuenta = 0;
 		
 		for (int i = 0;i<4;i++){
-			if (this.getColores().contains(new Color((Integer)unaSolucion.getGene(i).getAllele()))) 
+			if (this.getColores().contains(Color.fromInteger((Integer)unaSolucion.getGene(i).getAllele()))) 
 				cuenta = cuenta + 10;			
 		}
 		return cuenta;
