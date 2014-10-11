@@ -8,27 +8,24 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVFormat;
 
 import ar.com.ia.mastermind.dominio.Combinacion;
+import ar.com.ia.mastermind.exceptions.BussinessException;
 
 public class Log {
 
 	CSVPrinter impresora;
 
 	public Log(String nombreDelArchivo) {
-			CSVFormat formato = CSVFormat.RFC4180;
-			try {
-				this.impresora = new CSVPrinter(new PrintWriter(
-						nombreDelArchivo + ".csv"), formato);
-				// impresión de header
+		CSVFormat formato = CSVFormat.RFC4180;
+		try {
+			this.impresora = new CSVPrinter(new PrintWriter(nombreDelArchivo
+					+ ".csv"), formato);
+			// impresión de header
 
-				this.write(new String[] { "NroCorrida", "ColorPos1",
-						"ColorPos2", "ColorPos3", "ColorPos4", "Aptitud" });
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.write(new String[] { "NroCorrida", "ColorPos1", "ColorPos2",
+					"ColorPos3", "ColorPos4", "Aptitud" });
+		} catch (Exception e) {
+			throw new BussinessException("Imposible crear el archivo de Log");
+		}
 	}
 
 	public void escribir(Combinacion unaCombinacion, double valorFitness,
@@ -43,21 +40,19 @@ public class Log {
 	}
 
 	private void write(String[] valor) {
-			try {
-				this.impresora.printRecord(valor);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			this.impresora.printRecord(valor);
+		} catch (IOException e) {
+			throw new BussinessException("Imposible escribir el archivo de Log");
+		}
 	}
 
 	public void close() {
-			try {
-				this.impresora.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			this.impresora.close();
+		} catch (IOException e) {
+			throw new BussinessException("Imposible cerrar el archivo de Log");
+		}
 	}
 
 }
