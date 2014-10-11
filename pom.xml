@@ -11,6 +11,11 @@
 		<artifactId>jgap</artifactId>
 		<version>3.4.4</version>
   	</dependency>
+  	<dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-csv</artifactId>
+    	<version>1.0</version>
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>

@@ -1,5 +1,9 @@
 package ar.com.ia.mastermind.ejecutable;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -10,18 +14,19 @@ import org.jgap.impl.DefaultConfiguration;
 import org.jgap.impl.IntegerGene;
 
 import ar.com.ia.mastermind.algoritmogenetico.SolucionFitness;
+import ar.com.ia.mastermind.commons.Log;
 import ar.com.ia.mastermind.dominio.Color;
 import ar.com.ia.mastermind.dominio.ColorFactory;
 import ar.com.ia.mastermind.dominio.Combinacion;
 
 public class Main {
 
-	private final static int POBLACION_A_DESARROLLAR = 15;
-	private final static int MAXIMAS_EVOLUCIONES = 10;
-
 	public static void main(String[] args) throws Exception {
-
+		int poblacionSize;
+		int maximasEvoluciones;
+		String archivoLog = "";
 		Combinacion codigoSecreto = null;
+		
 		System.out.println("Mastermind V1.0");
 		if (args.length > 4) { //si hay más parámetros o ninguno
 			System.out.println("Error en los parámetros. Debe escribir por ejemplo: masterMind rojo amarillo azul verde");
@@ -39,6 +44,14 @@ public class Main {
 			codigoSecreto = new Combinacion(factory.construirColor(args[0]), factory.construirColor(args[1]), factory.construirColor(args[2]), factory.construirColor(args[3]));
 		}
 
+		Properties prop = new Properties();
+		InputStream input = null;
+		input = new FileInputStream("config.properties");
+		prop.load(input);
+		poblacionSize = Integer.parseInt(prop.getProperty("poblacionSize"));
+		maximasEvoluciones = Integer.parseInt(prop.getProperty("maximasEvoluciones"));
+		archivoLog = prop.getProperty("archivoDeLog");
+		
 		Configuration conf = new DefaultConfiguration();
 
 
@@ -57,12 +70,15 @@ public class Main {
 		Chromosome sampleChromosome = new Chromosome(conf, sampleGenes);
 
 		conf.setSampleChromosome(sampleChromosome);
-		conf.setPopulationSize(POBLACION_A_DESARROLLAR);
+		conf.setPopulationSize(poblacionSize);
 
 		Genotype population = Genotype.randomInitialGenotype(conf);
 		IChromosome bestSolutionSoFar = null;
+		
 		int i;
-		for (i = 0; i < MAXIMAS_EVOLUCIONES; i++) {
+		Log logueador = new Log(archivoLog);
+		
+		for (i = 0; i < maximasEvoluciones; i++) {
 			population.evolve();
 			bestSolutionSoFar = population.getFittestChromosome();
 			Combinacion mejor = new Combinacion(Color.fromInteger((Integer) bestSolutionSoFar.getGene(0).getAllele()),
@@ -70,6 +86,8 @@ public class Main {
 				Color.fromInteger((Integer) bestSolutionSoFar.getGene(2).getAllele()),
 				Color.fromInteger((Integer) bestSolutionSoFar.getGene(3).getAllele()));
 
+			logueador.escribir(mejor, bestSolutionSoFar.getFitnessValue(), i);
+			
 			if (codigoSecreto.equals(mejor)) {
 				System.out.println("\nGané en la evolución " + i + "!!!!!! con el resultado: ");
 				System.out.println("posicion 1: " + Color.fromInteger((int) bestSolutionSoFar.getGene(0).getAllele()).toString());
@@ -85,7 +103,8 @@ public class Main {
 			System.out.println("posicion 3: " + Color.fromInteger((int) bestSolutionSoFar.getGene(2).getAllele()).toString());
 			System.out.println("posicion 4: " + Color.fromInteger((int) bestSolutionSoFar.getGene(3).getAllele()).toString());
 		}
-		if (i == MAXIMAS_EVOLUCIONES) System.out.println("perdí :(");
+		if (i == maximasEvoluciones) System.out.println("perdí :(");
+		logueador.close();
 	}
 
 }
