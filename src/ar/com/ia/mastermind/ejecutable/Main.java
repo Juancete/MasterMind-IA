@@ -11,6 +11,7 @@ import org.jgap.impl.IntegerGene;
 
 import ar.com.ia.mastermind.algoritmogenetico.SolucionFitness;
 import ar.com.ia.mastermind.dominio.Color;
+import ar.com.ia.mastermind.dominio.ColorFactory;
 import ar.com.ia.mastermind.dominio.Combinacion;
 
 public class Main {
@@ -20,16 +21,34 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 
+			Combinacion codigoSecreto = null;
+			System.out.println("Mastermind V1.0");
+	        if (args.length > 4) { //si hay más parámetros o ninguno
+	            System.out.println("Error en los parámetros. Debe escribir por ejemplo: masterMind rojo amarillo azul verde");
+	            System.out.println("O bien si quiere ejecutar en automático: masterMind -a numeroDeCorridas");
+	            return;
+	        } else if (args.length == 0) { //si no hay parámetros      
+	            //Modo automático de una corrida
+	        	System.out.println("Se hará una corrida con el código secreto Amarillo Azul, Rojo, Amarillo");
+	            codigoSecreto = new Combinacion (Color.AMARILLO, Color.AZUL,  Color.ROJO, Color.AMARILLO);
+	        } else if (args.length == 2) { //si hay 2 parámetros      
+	            //Modo automático ?	            
+	        } else {
+	        	//Modo Manual
+	            ColorFactory factory = new ColorFactory();
+	            codigoSecreto = new Combinacion (factory.construirColor(args[0]), factory.construirColor(args[1]),  factory.construirColor(args[2]), factory.construirColor(args[3]));
+	        }
+		
 		  Configuration conf = new DefaultConfiguration();
 
 
-		  Combinacion codigoSecreto = new Combinacion (Color.AMARILLO, Color.AZUL,  Color.ROJO, Color.AMARILLO); 
+		   
 		  FitnessFunction myFunc =
 		    new SolucionFitness(codigoSecreto);
 
 		  conf.setFitnessFunction( myFunc );
 
-		  Gene[] sampleGenes = new Gene[ 4 ];
+		  Gene[] sampleGenes = new Gene[4];
 
 		  sampleGenes[0] = new IntegerGene(conf, 0, 7 );  // posición 1
 		  sampleGenes[1] = new IntegerGene(conf, 0, 7 );  // posición 2
