@@ -4,14 +4,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.jgap.Chromosome;
+import ar.com.ia.mastermind.algoritmogenetico.ConfigurationBuilder;
+import ar.com.ia.mastermind.algoritmogenetico.ConfigurationFactory;
 import org.jgap.Configuration;
-import org.jgap.FitnessFunction;
-import org.jgap.Gene;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
-import org.jgap.impl.DefaultConfiguration;
-import org.jgap.impl.IntegerGene;
 
 import ar.com.ia.mastermind.algoritmogenetico.SolucionFitness;
 import ar.com.ia.mastermind.commons.Log;
@@ -48,39 +45,30 @@ public class Main {
 		InputStream input = null;
 		input = new FileInputStream("config.properties");
 		prop.load(input);
-		poblacionSize = Integer.parseInt(prop.getProperty("poblacionSize"));
 		maximasEvoluciones = Integer.parseInt(prop.getProperty("maximasEvoluciones"));
 		archivoLog = prop.getProperty("archivoDeLog");
-		
-		Configuration conf = new DefaultConfiguration();
 
+		ConfigurationFactory configurationFactory = new ConfigurationFactory(prop, codigoSecreto);
+		Configuration conf = configurationFactory.getConfiguration(0);
 
-		FitnessFunction myFunc =
-			new SolucionFitness(codigoSecreto);
-
-		conf.setFitnessFunction(myFunc);
-
-		Gene[] sampleGenes = new Gene[4];
-
-		sampleGenes[0] = new IntegerGene(conf, 0, 7);  // posición 1
-		sampleGenes[1] = new IntegerGene(conf, 0, 7);  // posición 2
-		sampleGenes[2] = new IntegerGene(conf, 0, 7);  // posición 3
-		sampleGenes[3] = new IntegerGene(conf, 0, 7);  // posición 4
-
-		Chromosome sampleChromosome = new Chromosome(conf, sampleGenes);
-
-		conf.setSampleChromosome(sampleChromosome);
-		conf.setPopulationSize(poblacionSize);
-
-		Genotype population = Genotype.randomInitialGenotype(conf);
+		Genotype genotipe = Genotype.randomInitialGenotype(conf);
 		IChromosome bestSolutionSoFar = null;
 		
 		int i;
 		Log logueador = new Log(archivoLog);
 		
 		for (i = 0; i < maximasEvoluciones; i++) {
-			population.evolve();
-			bestSolutionSoFar = population.getFittestChromosome();
+
+			Configuration.reset();
+
+			genotipe = new Genotype(
+				configurationFactory.getConfiguration(i / (double)maximasEvoluciones)
+				,
+				genotipe.getPopulation()
+			);
+
+			genotipe.evolve();
+			bestSolutionSoFar = genotipe.getFittestChromosome();
 			Combinacion mejor = new Combinacion(Color.fromInteger((Integer) bestSolutionSoFar.getGene(0).getAllele()),
 				Color.fromInteger((Integer) bestSolutionSoFar.getGene(1).getAllele()),
 				Color.fromInteger((Integer) bestSolutionSoFar.getGene(2).getAllele()),
