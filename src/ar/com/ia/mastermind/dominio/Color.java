@@ -9,7 +9,7 @@ public enum Color {
 	VERDE(3, "Verde"),
 	VIOLETA(4, "Violeta"),
 	NARANJA(5, "Naranja"),
-	PURPURA(6, "Púrpura"),
+	MAGENTA(6, "Magenta"),
 	CELESTE(7, "Celeste");
 
 	private int valor;

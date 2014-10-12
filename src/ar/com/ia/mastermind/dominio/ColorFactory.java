@@ -19,7 +19,7 @@ public class ColorFactory {
 			case "naranja":
 				return Color.NARANJA;
 			case "purpura":
-				return Color.PURPURA;
+				return Color.MAGENTA;
 			case "celeste":
 				return Color.CELESTE;
 			default:
