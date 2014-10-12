@@ -1,3 +1,4 @@
 /Mastermind-IA.iml
 target/
 .idea/
+*.csv

@@ -50,4 +50,11 @@ public class Combinacion {
 	public void setColores(List<Color> colores) {
 		this.colores = colores;
 	}
+	public void print(){
+		System.out.println("Colores en orden: " + this.getColores().get(0).toString() + " - " +
+				this.getColores().get(1).toString() + " - " +
+				this.getColores().get(2).toString() + " - " +
+				this.getColores().get(3).toString());
+		
+	}
 }

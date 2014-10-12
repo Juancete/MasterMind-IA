@@ -28,20 +28,22 @@ public class Main {
 		Combinacion codigoSecreto = null;
 		
 		System.out.println("Mastermind V1.0");
-		if (args.length > 4) { //si hay más parámetros o ninguno
-			System.out.println("Error en los parámetros. Debe escribir por ejemplo: masterMind rojo amarillo azul verde");
-			System.out.println("O bien si quiere ejecutar en automático: masterMind -a numeroDeCorridas");
-			return;
-		} else if (args.length == 0) { //si no hay parámetros
-			//Modo automático de una corrida
-			System.out.println("Se hará una corrida con el código secreto Amarillo Azul, Rojo, Amarillo");
-			codigoSecreto = new Combinacion(Color.AMARILLO, Color.AZUL, Color.ROJO, Color.AMARILLO);
-		} else if (args.length == 2) { //si hay 2 parámetros
-			//Modo automático ?
-		} else {
+		if (args.length == 4) { //si hay 4 par\u00e1metros 
 			//Modo Manual
 			ColorFactory factory = new ColorFactory();
 			codigoSecreto = new Combinacion(factory.construirColor(args[0]), factory.construirColor(args[1]), factory.construirColor(args[2]), factory.construirColor(args[3]));
+		} else if (args.length == 0) { //si no hay par\u00e1metros
+			//Modo autom\u00e1tico de una corrida
+			System.out.println("La corrida tiene por código secreto Amarillo Azul, Rojo, Amarillo");
+			codigoSecreto = new Combinacion(Color.AMARILLO, Color.AZUL, Color.ROJO, Color.AMARILLO);
+		} else if (args.length == 2) { //si hay 2 par\u00e1metros
+			//Modo autom\u00e1tico ?
+			
+		} else {
+			System.out.println("Error en los parámetros. Debe escribir por ejemplo: masterMind rojo amarillo azul verde");
+			System.out.println("Los colores posibles son " + java.util.Arrays.asList(Color.values()));
+			//System.out.println("O bien si quiere ejecutar en autom\u00e1tico: masterMind -a numeroDeCorridas");
+			return;			
 		}
 
 		Properties prop = new Properties();
@@ -62,10 +64,10 @@ public class Main {
 
 		Gene[] sampleGenes = new Gene[4];
 
-		sampleGenes[0] = new IntegerGene(conf, 0, 7);  // posición 1
-		sampleGenes[1] = new IntegerGene(conf, 0, 7);  // posición 2
-		sampleGenes[2] = new IntegerGene(conf, 0, 7);  // posición 3
-		sampleGenes[3] = new IntegerGene(conf, 0, 7);  // posición 4
+		sampleGenes[0] = new IntegerGene(conf, 0, 7);  // posici\u00f3n 1
+		sampleGenes[1] = new IntegerGene(conf, 0, 7);  // posici\u00f3n 2
+		sampleGenes[2] = new IntegerGene(conf, 0, 7);  // posici\u00f3n 3
+		sampleGenes[3] = new IntegerGene(conf, 0, 7);  // posici\u00f3n 4
 
 		Chromosome sampleChromosome = new Chromosome(conf, sampleGenes);
 
@@ -89,19 +91,13 @@ public class Main {
 			logueador.escribir(mejor, bestSolutionSoFar.getFitnessValue(), i);
 			
 			if (codigoSecreto.equals(mejor)) {
-				System.out.println("\nGané en la evolución " + i + "!!!!!! con el resultado: ");
-				System.out.println("posicion 1: " + Color.fromInteger((int) bestSolutionSoFar.getGene(0).getAllele()).toString());
-				System.out.println("posicion 2: " + Color.fromInteger((int) bestSolutionSoFar.getGene(1).getAllele()).toString());
-				System.out.println("posicion 3: " + Color.fromInteger((int) bestSolutionSoFar.getGene(2).getAllele()).toString());
-				System.out.println("posicion 4: " + Color.fromInteger((int) bestSolutionSoFar.getGene(3).getAllele()).toString());
+				System.out.println("\nGané en la evoluci\u00f3n " + i + "!!!!!! con el resultado: ");
+				mejor.print();
 				break;
 			}
-			System.out.println("La mejor solucion para la evolución " + i + ": ");
+			System.out.println("\nLa mejor solucion para la evoluci\u00f3n " + i + ": ");
+			mejor.print();
 
-			System.out.println("posicion 1: " + Color.fromInteger((int) bestSolutionSoFar.getGene(0).getAllele()).toString());
-			System.out.println("posicion 2: " + Color.fromInteger((int) bestSolutionSoFar.getGene(1).getAllele()).toString());
-			System.out.println("posicion 3: " + Color.fromInteger((int) bestSolutionSoFar.getGene(2).getAllele()).toString());
-			System.out.println("posicion 4: " + Color.fromInteger((int) bestSolutionSoFar.getGene(3).getAllele()).toString());
 		}
 		if (i == maximasEvoluciones) System.out.println("perdí :(");
 		logueador.close();
