@@ -30,8 +30,8 @@ public class ConfigurationFactory {
 	}
 
 	private void setMutation(Properties properties, double runRate) {
-		String mutation = properties.getProperty("mutation");
-		String mutationRate = properties.getProperty("mutationRate");
+		String mutation = properties.getProperty("mutacion");
+		String mutationRate = properties.getProperty("indiceDeMutacion");
 
 		if(mutation.equals("simple")){
 			if(!mutationRate.isEmpty()) this.builder.SetMutationOperator(Integer.parseInt(mutationRate));
@@ -43,10 +43,10 @@ public class ConfigurationFactory {
 
 	private void setSelector() {
 		String selector = properties.getProperty("selector");
-		if(selector.equals("tournament")) builder.SetTournamentSelector();
+		if(selector.equals("torneo")) builder.SetTournamentSelector();
 		if(selector.equals("ranking")) builder.SetRankingSelector();
 
-		if(!(selector.equals("ranking") || selector.equals("tournament")))
+		if(!(selector.equals("ranking") || selector.equals("torneo")))
 			throw new BussinessException("unknown selector: " + selector);
 	}
 
