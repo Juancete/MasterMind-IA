@@ -32,6 +32,7 @@ public class ConfigurationFactory {
 	private void setMutation(Properties properties, double runRate) {
 		String mutation = properties.getProperty("mutacion");
 		String mutationRate = properties.getProperty("indiceDeMutacion");
+		if(mutation == null) return;
 
 		if(mutation.equals("simple")){
 			if(!mutationRate.isEmpty()) this.builder.SetMutationOperator(Integer.parseInt(mutationRate));
